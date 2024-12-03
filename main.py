@@ -1,6 +1,6 @@
 import asyncio
 import time
-from aws import authorize_traffic_between_sgs, create_g_sc, create_sg, get_default_vpc_id, create_instances, get_private_ips, wait_for_instances, get_public_dns_names
+from aws import authorize_traffic_between_sgs, create_gatekeeper_sc, create_sg, get_default_vpc_id, create_instances, get_private_ips, wait_for_instances, get_public_dns_names
 from benchmarking import send_requests
 from constants import HTTP_PORT, PROXY_PORT, SSH_PORT, KEY_FILENAME
 from enums import ProxyMode
@@ -12,7 +12,7 @@ vpc_id = get_default_vpc_id()
 
 
 # Create the Gatekeeper
-gatekeeper_security_group_id = create_g_sc(vpc_id)
+gatekeeper_security_group_id = create_gatekeeper_sc(vpc_id)
 gatekeeper_id   = create_instances('t2.large', 1, gatekeeper_security_group_id, 'gatekeeper')[0]
 
 # Create the Trusted Host

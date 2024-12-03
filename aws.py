@@ -72,7 +72,7 @@ def create_sg(vpc_id: str, group_name: str) -> str:
 
     return security_group_id
 
-def create_g_sc(vpc_id: str):
+def create_gatekeeper_sc(vpc_id: str):
     gatekeeper_security_group_id = create_sg(vpc_id, 'gatekeeper security group')
 
     try:
@@ -90,18 +90,6 @@ def create_g_sc(vpc_id: str):
                     'FromPort': HTTP_PORT,
                     'ToPort': HTTP_PORT,
                     'IpRanges': [{'CidrIp': '0.0.0.0/0'}]
-                }
-            ]
-        )
-
-        ec2.authorize_security_group_egress(
-            GroupId=gatekeeper_security_group_id,
-            IpPermissions=[
-                {
-                    'IpProtocol': '-1',  # Allow all traffic
-                    'FromPort': 0,
-                    'ToPort': 65535,
-                    'IpRanges': [{'CidrIp': '0.0.0.0/0'}]  # Allow all outbound
                 }
             ]
         )
