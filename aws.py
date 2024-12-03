@@ -93,6 +93,18 @@ def create_gatekeeper_sc(vpc_id: str):
                 }
             ]
         )
+
+        ec2.authorize_security_group_egress(
+            GroupId=gatekeeper_security_group_id,
+            IpPermissions=[
+                {
+                    'IpProtocol': '-1',  # Allow all traffic
+                    'FromPort': 0,
+                    'ToPort': 65535,
+                    'IpRanges': [{'CidrIp': '0.0.0.0/0'}]  # Allow all outbound
+                }
+            ]
+        )
     except ClientError as e:
         if (e.response['Error']['Code'] == 'InvalidPermission.Duplicate'):
             logging.warning(f'The gatekeeper security group has already the necessary permissions.')
